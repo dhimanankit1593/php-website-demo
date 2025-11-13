@@ -18,8 +18,12 @@ pipeline {
             steps {
                 echo "Building PHP application..."
                 sh '''
-                mkdir -p build
-                cp -r * build/
+                # Create build directory
+                rm -rf build
+                mkdir build
+
+                # Copy all project files except the build directory itself
+                rsync -av --exclude='build' . build/
                 '''
             }
         }
@@ -29,14 +33,14 @@ pipeline {
                 echo "Testing PHP files for syntax errors..."
                 sh '''
                 find . -name "*.php" -exec php -l {} \\; | grep -v "No syntax errors"
-                echo "All PHP files passed syntax validation!"
+                echo "All PHP files validated successfully!"
                 '''
             }
         }
 
         stage('Deploy') {
             steps {
-                echo "Deploying application to Apache web server..."
+                echo "Deploying PHP website to Apache..."
                 sh '''
                 sudo rm -rf ${DEPLOY_DIR}/*
                 sudo cp -r build/* ${DEPLOY_DIR}/
@@ -49,10 +53,10 @@ pipeline {
 
     post {
         success {
-            echo "✅ Website deployed successfully!"
+            echo "✅ Pipeline executed successfully — Website deployed!"
         }
         failure {
-            echo "❌ Pipeline failed. Check Jenkins console output."
+            echo "❌ Pipeline failed — Check Jenkins console logs!"
         }
     }
 }
