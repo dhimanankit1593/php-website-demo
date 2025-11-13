@@ -46,6 +46,7 @@ pipeline {
             steps {
                 echo "Deploying PHP website to Apache..."
                 sh '''
+                    rm -rf /var/www/html/index.html
                     cp -r build/* /var/www/html/
                     sudo systemctl restart apache2
                 '''
