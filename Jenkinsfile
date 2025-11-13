@@ -18,12 +18,9 @@ pipeline {
             steps {
                 echo "Building PHP application..."
                 sh '''
-                # Create build directory
                 rm -rf build
                 mkdir build
-
-                # Copy all project files except the build directory itself
-                rsync -av --exclude='build' . build/
+                rsync -av --exclude='build' --exclude='.git' . build/
                 '''
             }
         }
@@ -32,8 +29,18 @@ pipeline {
             steps {
                 echo "Testing PHP files for syntax errors..."
                 sh '''
-                find . -name "*.php" -exec php -l {} \\; | grep -v "No syntax errors"
-                echo "All PHP files validated successfully!"
+                # Run syntax check for all PHP files
+                ERRORS=0
+                for file in $(find . -name "*.php"); do
+                    php -l $file || ERRORS=1
+                done
+
+                if [ $ERRORS -ne 0 ]; then
+                    echo "PHP syntax errors detected!"
+                    exit 1
+                else
+                    echo "All PHP syntax tests passed successfully ✅"
+                fi
                 '''
             }
         }
