@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DEPLOY_PATH = "/var/www/html"
-        PASSWORD = credentials('sudo-password')  // Jenkins Credential ID for sudo password
+     
     }
 
     stages {
@@ -46,9 +46,8 @@ pipeline {
             steps {
                 echo "Deploying PHP website to Apache..."
                 sh '''
-                    echo "$PASSWORD" | sudo -S rm -rf /var/www/html/*
-                    echo "$PASSWORD" | sudo -S cp -r build/* /var/www/html/
-                    echo "$PASSWORD" | sudo -S systemctl restart apache2
+                    cp -r build/* /var/www/html/
+                     systemctl restart apache2
                 '''
                 echo "✅ Deployment completed successfully!"
             }
