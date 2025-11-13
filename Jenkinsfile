@@ -29,7 +29,6 @@ pipeline {
             steps {
                 echo "Testing PHP files for syntax errors..."
                 sh '''
-                # Run syntax check for all PHP files
                 ERRORS=0
                 for file in $(find . -name "*.php"); do
                     php -l $file || ERRORS=1
@@ -52,7 +51,7 @@ pipeline {
                 sudo rm -rf ${DEPLOY_DIR}/*
                 sudo cp -r build/* ${DEPLOY_DIR}/
                 sudo systemctl restart apache2
-                echo "Deployment completed successfully!"
+                echo "✅ Deployment completed successfully!"
                 '''
             }
         }
