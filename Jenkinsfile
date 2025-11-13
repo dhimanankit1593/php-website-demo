@@ -48,7 +48,6 @@ pipeline {
                 sh '''
                     rm -rf /var/www/html/index.html
                     cp -r build/* /var/www/html/
-                    chmod -R 755 /var/www/html
                     sudo systemctl restart apache2
                 '''
                 echo "✅ Deployment completed successfully!"
