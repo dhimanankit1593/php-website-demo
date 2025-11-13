@@ -47,7 +47,7 @@ pipeline {
                 echo "Deploying PHP website to Apache..."
                 sh '''
                     cp -r build/* /var/www/html/
-                     sudo systemctl restart apache2
+                    sudo systemctl restart apache2
                 '''
                 echo "✅ Deployment completed successfully!"
             }
