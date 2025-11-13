@@ -1,4 +1,10 @@
 <?php
-echo "<h1>Welcome to My PHP Website - Deployed via Jenkins!</h1>";
-echo "<p>Version: 1.0</p>";
+
+// Show all information, defaults to INFO_ALL
+phpinfo();
+
+// Show just the module information.
+// phpinfo(8) yields identical results.
+phpinfo(INFO_MODULES);
+
 ?>
